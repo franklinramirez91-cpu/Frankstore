@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<meta name="description" content="Catálogo digital FRANK STORE. Productos variados y pedidos por WhatsApp.">
+<title>FRANK STORE | Catálogo digital</title>
+<style>
+:root{--bg:#101010;--panel:#1a1a1a;--orange:#ff6a00;--white:#f7f7f7;--muted:#b8b8b8;--line:#333}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+header{background:linear-gradient(135deg,#111 55%,#3b1907);border-bottom:2px solid var(--orange);padding:22px 16px}
+.wrap{max-width:1100px;margin:auto}.brand{display:flex;align-items:center;gap:14px}.logo{width:58px;height:58px;border-radius:14px;background:var(--orange);color:#111;display:grid;place-items:center;font-size:24px;font-weight:900}.brand h1{font-size:clamp(24px,4vw,38px);margin:0;color:var(--orange);letter-spacing:1px}.brand p{margin:5px 0 0;color:#ddd;font-size:12px;letter-spacing:2px}
+.hero{padding:34px 0 24px}.hero h2{font-size:clamp(28px,5vw,48px);margin:0 0 10px}.hero h2 span{color:var(--orange)}.hero p{color:var(--muted);max-width:600px;line-height:1.6}.button{display:inline-block;border:0;background:var(--orange);color:#111;text-decoration:none;font-weight:bold;padding:12px 16px;border-radius:9px;cursor:pointer}
+main{padding:0 16px 45px}.tools{display:grid;grid-template-columns:1fr;gap:10px;margin:18px 0}.tools input,.tools select{width:100%;padding:12px;border-radius:9px;border:1px solid var(--line);background:#202020;color:white;font-size:15px}
+h3{font-size:22px;margin:24px 0 12px}.categories{display:flex;flex-wrap:wrap;gap:8px}.cat{border:1px solid #444;background:#1d1d1d;color:#eee;padding:9px 13px;border-radius:99px;cursor:pointer}.cat.active{background:var(--orange);color:#111;border-color:var(--orange);font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.card{background:var(--panel);border:1px solid #303030;border-radius:14px;overflow:hidden}.product-image{height:155px;background:linear-gradient(135deg,#292929,#111);display:grid;place-items:center;color:#777;font-size:13px;text-align:center;padding:12px}.product-image img{width:100%;height:100%;object-fit:cover}.card-content{padding:14px}.card h4{margin:0 0 8px;font-size:17px}.desc{color:var(--muted);font-size:13px;line-height:1.5;min-height:36px}.price{color:var(--orange);font-size:22px;font-weight:800;margin:12px 0}.empty{padding:28px 18px;border:1px dashed #555;border-radius:14px;color:#ccc;line-height:1.6;text-align:center}.empty strong{color:var(--orange)}.admin-note{font-size:13px;color:#aaa;margin-top:18px}.contact{background:#1b1b1b;border:1px solid #333;border-left:4px solid var(--orange);padding:18px;border-radius:12px;margin-top:28px}.contact p{color:#ccc;line-height:1.6}footer{border-top:1px solid #333;padding:22px 16px;color:#999;font-size:12px;text-align:center}
+@media(min-width:700px){.tools{grid-template-columns:2fr 1fr}.hero{padding-top:48px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><div class="logo">FS</div><div><h1>FRANK STORE</h1><p>ESTILO · CALIDAD · BUEN PRECIO</p></div></div>
+  <section class="hero"><h2>Encuentra lo que <span>buscas.</span></h2><p>Explora nuestros productos, consulta precios y haz tu pedido directamente por WhatsApp. ¡Estamos preparando el catálogo!</p><a class="button" href="#productos">Ver productos</a></section>
+</div></header>
+<main class="wrap">
+  <h3>Categorías</h3><div id="categories" class="categories"></div>
+  <div class="tools"><input id="search" type="search" placeholder="Buscar por nombre o código…" aria-label="Buscar productos"><select id="sort" aria-label="Ordenar productos"><option value="default">Ordenar productos</option><option value="low">Precio: menor a mayor</option><option value="high">Precio: mayor a menor</option><option value="name">Nombre: A-Z</option></select></div>
+  <h3 id="products">Catálogo de productos</h3><div id="grid" class="grid"></div>
+  <p class="admin-note">Los productos y precios que se publiquen deberán ser confirmados por FRANK STORE. Esta plantilla comienza sin productos cargados.</p>
+  <section class="contact"><h3>¿Buscas algo en particular?</h3><p>Escríbenos por WhatsApp para consultar disponibilidad o recibir información.</p><a class="button" id="general-whatsapp" target="_blank" rel="noopener">Contactar por WhatsApp</a></section>
+</main>
+<footer>© <span id="year"></span> FRANK STORE · Catálogo digital</footer>
+<script>
+// Añade tus productos al arreglo PRODUCTS. Usa precio numérico en USD y una categoría.
+// Para una foto, coloca el archivo en la carpeta images y escribe, por ejemplo, "images/producto.jpg".
+const WHATSAPP_NUMBER = "584128729522";
+const PRODUCTS = [
+  // Ejemplo para copiar y completar:
+  // {code:"FS001", name:"Nombre del producto", category:"Accesorios", price:19.99, description:"Descripción breve", image:"images/producto.jpg"}
+];
+const categoriesEl=document.querySelector("#categories"), gridEl=document.querySelector("#grid");
+const searchEl=document.querySelector("#search"), sortEl=document.querySelector("#sort");
+let activeCategory="Todos";
+const money=n=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n);
+function waLink(message){return "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message)}
+document.querySelector("#general-whatsapp").href=waLink("Hola FRANK STORE, quisiera información sobre sus productos.");
+document.querySelector("#year").textContent=new Date().getFullYear();
+function renderCategories(){
+ const cats=["Todos",...new Set(PRODUCTS.map(p=>p.category).filter(Boolean))];
+ categoriesEl.innerHTML="";
+ cats.forEach(cat=>{const b=document.createElement("button");b.className="cat"+(cat===activeCategory?" active":"");b.textContent=cat;b.onclick=()=>{activeCategory=cat;renderCategories();renderProducts()};categoriesEl.appendChild(b)});
+}
+function renderProducts(){
+ let list=PRODUCTS.filter(p=>(activeCategory==="Todos"||p.category===activeCategory)&&((p.name+" "+p.code+" "+p.description).toLowerCase().includes(searchEl.value.toLowerCase())));
+ if(sortEl.value==="low")list.sort((a,b)=>a.price-b.price);
+ if(sortEl.value==="high")list.sort((a,b)=>b.price-a.price);
+ if(sortEl.value==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
+ gridEl.innerHTML="";
+ if(!list.length){gridEl.innerHTML='<div class="empty"><strong>¡Próximamente!</strong><br>No hay productos cargados todavía.<br>Cuando añadas productos y precios, aparecerán aquí automáticamente.</div>';return}
+ list.forEach(p=>{
+  const card=document.createElement("article");card.className="card";
+  const image=document.createElement("div");image.className="product-image";
+  if(p.image){const img=document.createElement("img");img.src=p.image;img.alt=p.name;img.onerror=()=>{image.textContent="Foto pendiente"};image.appendChild(img)}else image.textContent="Foto del producto";
+  const content=document.createElement("div");content.className="card-content";
+  const title=document.createElement("h4");title.textContent=p.name;
+  const desc=document.createElement("p");desc.className="desc";desc.textContent=p.description||"Consulta los detalles por WhatsApp.";
+  const price=document.createElement("div");price.className="price";price.textContent=money(p.price);
+  const btn=document.createElement("a");btn.className="button";btn.textContent="Pedir por WhatsApp";btn.target="_blank";btn.rel="noopener";btn.href=waLink("Hola FRANK STORE, me interesa: "+p.name+" ("+p.code+"), precio "+money(p.price)+". ¿Está disponible?");
+  content.append(title,desc,price,btn);card.append(image,content);gridEl.appendChild(card);
+ });
+}
+searchEl.addEventListener("input",renderProducts);sortEl.addEventListener("change",renderProducts);renderCategories();renderProducts();
+</script>
+</body></html>
